@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>박건희 위키 · 평창 일차의료 혁신</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  :root{
+    --paper:#F3F5F2; --surface:#FFFFFF; --surface-2:#FAFBF9;
+    --ink:#16211E; --ink-2:#46544F; --ink-3:#7C8983;
+    --pine:#1C5D49; --pine-deep:#123E31; --pine-tint:#E7F0EB;
+    --sig-green:#2F8C5A; --sig-amber:#C0871F; --sig-red:#B0453B;
+    --line:#E2E8E2; --line-2:#EEF2ED;
+    --amber:#B07A1E;
+    --r:10px; --maxw:1320px;
+    --serif:"Noto Serif KR",serif;
+    --sans:"Pretendard","Pretendard Variable",system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+    font-size:16px;line-height:1.72;-webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;}
+  a{color:inherit;}
+  ::selection{background:var(--pine-tint);}
+
+  /* ---------- TOPBAR ---------- */
+  .topbar{position:sticky;top:0;z-index:40;height:60px;
+    background:rgba(243,245,242,.86);backdrop-filter:saturate(1.4) blur(10px);
+    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:18px;padding:0 22px;}
+  .brand{display:flex;align-items:baseline;gap:11px;text-decoration:none;min-width:0;}
+  .brand__mark{font-family:var(--serif);font-weight:700;font-size:21px;letter-spacing:-.01em;color:var(--pine-deep);white-space:nowrap;}
+  .brand__sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap;}
+  .topbar__spacer{flex:1;}
+  .search{position:relative;width:min(320px,42vw);}
+  .search input{width:100%;height:38px;border:1px solid var(--line);border-radius:99px;
+    background:var(--surface);padding:0 16px 0 38px;font-family:var(--sans);font-size:14px;color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s;}
+  .search input:focus{border-color:var(--pine);box-shadow:0 0 0 3px var(--pine-tint);}
+  .search__icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--ink-3);pointer-events:none;}
+  .search__results{position:absolute;top:46px;left:0;right:0;background:var(--surface);
+    border:1px solid var(--line);border-radius:var(--r);box-shadow:0 12px 30px -12px rgba(18,62,49,.28);
+    overflow:hidden;display:none;max-height:60vh;overflow-y:auto;}
+  .search__results.show{display:block;}
+  .search__item{display:block;width:100%;text-align:left;border:0;background:none;cursor:pointer;
+    padding:9px 15px;font-size:14px;color:var(--ink);border-bottom:1px solid var(--line-2);}
+  .search__item:last-child{border-bottom:0;}
+  .search__item:hover,.search__item.active{background:var(--pine-tint);}
+  .search__item small{display:block;font-family:var(--mono);font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.1em;}
+  .menu-btn{display:none;border:1px solid var(--line);background:var(--surface);border-radius:9px;
+    width:40px;height:40px;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);}
+
+  /* ---------- LAYOUT ---------- */
+  .shell{max-width:var(--maxw);margin:0 auto;display:grid;
+    grid-template-columns:248px minmax(0,1fr) 252px;gap:0;align-items:start;}
+  @media(max-width:1080px){.shell{grid-template-columns:248px minmax(0,1fr);}.rail{display:none;}}
+  @media(max-width:760px){.shell{grid-template-columns:1fr;}}
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;
+    padding:26px 16px 60px 22px;border-right:1px solid var(--line);}
+  .nav-sec{margin-bottom:22px;}
+  .nav-sec__title{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink-3);padding:0 10px;margin:0 0 7px;}
+  .nav-link{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;
+    text-decoration:none;color:var(--ink-2);font-size:14.5px;line-height:1.3;transition:background .13s,color .13s;cursor:pointer;}
+  .nav-link:hover{background:var(--surface-2);color:var(--ink);}
+  .nav-link.active{background:var(--pine-tint);color:var(--pine-deep);font-weight:600;}
+  .dot{width:7px;height:7px;border-radius:50%;flex:none;background:var(--ink-3);}
+  .dot--person{background:var(--pine-deep);} .dot--institution{background:var(--pine);}
+  .dot--program{background:var(--sig-green);} .dot--concept{background:#4E6C8A;}
+  .dot--ideas{background:var(--sig-amber);} .dot--sources{background:var(--ink-3);}
+  .dot--meta{background:var(--sig-red);}
+  .dot--record{background:#7A5C9E;} .dot--era{background:#2E7D8A;}
+
+  /* ---------- MAIN ---------- */
+  .main{padding:38px clamp(20px,4vw,56px) 90px;min-height:calc(100vh - 60px);}
+  .crumb{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px;}
+  .crumb a{color:var(--pine);text-decoration:none;}
+  .crumb a:hover{text-decoration:underline;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);margin-bottom:10px;}
+  .eyebrow .dot{width:8px;height:8px;}
+  h1.title{font-family:var(--serif);font-weight:700;font-size:clamp(30px,4.6vw,42px);line-height:1.16;
+    letter-spacing:-.015em;margin:0 0 16px;color:var(--ink);}
+  .lede{font-size:18px;line-height:1.7;color:var(--ink-2);max-width:64ch;margin:0 0 22px;}
+  .lede b,.lede strong{color:var(--ink);font-weight:600;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px;padding:0 0 24px;border-bottom:1px solid var(--line);}
+  .chip{display:inline-flex;align-items:baseline;gap:7px;background:var(--surface);border:1px solid var(--line);
+    border-radius:99px;padding:5px 13px;font-size:12.5px;color:var(--ink-2);}
+  .chip b{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:500;}
+
+  .prose{max-width:70ch;}
+  .prose h2{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.01em;margin:38px 0 12px;
+    padding-top:4px;color:var(--ink);}
+  .prose h3{font-size:16px;font-weight:700;margin:26px 0 8px;color:var(--ink);}
+  .prose p{margin:0 0 15px;}
+  .prose ul{margin:0 0 16px;padding-left:0;list-style:none;}
+  .prose ul li{position:relative;padding-left:20px;margin:0 0 8px;}
+  .prose ul li::before{content:"";position:absolute;left:4px;top:.72em;width:5px;height:5px;border-radius:50%;background:var(--pine);}
+  .prose ol{margin:0 0 16px;padding-left:22px;}
+  .prose ol li{margin:0 0 8px;}
+  .prose strong{font-weight:600;color:var(--ink);}
+  .prose blockquote{margin:18px 0;padding:14px 18px;border-left:3px solid var(--pine);
+    background:var(--surface-2);border-radius:0 8px 8px 0;color:var(--ink-2);font-size:15.5px;}
+  .prose blockquote em{font-style:normal;color:var(--ink);font-weight:500;}
+  .prose .src{display:block;font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-top:6px;}
+  table{width:100%;border-collapse:collapse;margin:16px 0 22px;font-size:14.5px;}
+  th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:top;}
+  thead th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);
+    border-bottom:1.5px solid var(--line);background:var(--surface-2);}
+  tbody tr:hover{background:var(--surface-2);}
+
+  /* wikilinks */
+  .wl{color:var(--pine);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--pine) 28%,transparent);
+    padding-bottom:.5px;transition:border-color .13s,background .13s;cursor:pointer;}
+  .wl:hover{border-bottom-color:var(--pine);background:var(--pine-tint);}
+  .wl--broken{color:var(--ink-3);border-bottom:1px dashed var(--ink-3);cursor:help;}
+
+  /* signal callouts for the lint page */
+  .signal{display:flex;gap:11px;padding:13px 16px;border-radius:10px;border:1px solid var(--line);
+    background:var(--surface);margin:0 0 12px;}
+  .signal__dot{width:11px;height:11px;border-radius:50%;flex:none;margin-top:6px;}
+  .signal--green .signal__dot{background:var(--sig-green);} .signal--green{border-left:3px solid var(--sig-green);}
+  .signal--amber .signal__dot{background:var(--sig-amber);} .signal--amber{border-left:3px solid var(--sig-amber);}
+  .signal--red .signal__dot{background:var(--sig-red);} .signal--red{border-left:3px solid var(--sig-red);}
+  .signal--gray .signal__dot{background:var(--ink-3);} .signal--gray{border-left:3px solid var(--ink-3);}
+  .signal p{margin:0;font-size:14.5px;line-height:1.6;}
+  .signal p strong{color:var(--ink);}
+
+  .related{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);
+    display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  .related__label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-right:4px;}
+
+  /* ---------- RIGHT RAIL (backlinks) ---------- */
+  .rail{position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;
+    padding:38px 22px 60px 12px;border-left:1px solid var(--line);}
+  .rail__h{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 12px;}
+  .backlink{display:block;text-decoration:none;background:var(--surface);border:1px solid var(--line);
+    border-radius:9px;padding:10px 12px;margin-bottom:9px;transition:border-color .14s,transform .14s;cursor:pointer;}
+  .backlink:hover{border-color:var(--pine);transform:translateX(-2px);}
+  .backlink__t{font-size:13.5px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:8px;}
+  .backlink__type{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:3px;}
+  .rail__empty{font-size:13px;color:var(--ink-3);line-height:1.6;}
+
+  /* ---------- HOME ---------- */
+  .hero{position:relative;overflow:hidden;border-radius:16px;border:1px solid var(--line);
+    background:linear-gradient(160deg,#14463A 0%,#123E31 55%,#0E3327 100%);color:#EAF2ED;
+    padding:46px clamp(24px,5vw,54px) 42px;margin-bottom:34px;}
+  .hero svg.contour{position:absolute;inset:0;width:100%;height:100%;opacity:.16;pointer-events:none;}
+  .hero__eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#9DC7B4;margin-bottom:14px;position:relative;}
+  .hero__title{font-family:var(--serif);font-weight:700;font-size:clamp(30px,5vw,46px);line-height:1.14;letter-spacing:-.02em;margin:0 0 16px;position:relative;}
+  .hero__title .accent{color:#7FD0A8;}
+  .hero__desc{position:relative;max-width:60ch;font-size:16px;line-height:1.75;color:#CFE3D8;margin:0;}
+  .hero__meta{position:relative;margin-top:22px;display:flex;flex-wrap:wrap;gap:18px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:#9DC7B4;}
+  .hero__meta span b{color:#EAF2ED;font-weight:500;}
+
+  .home-sec{margin:30px 0;}
+  .home-sec__h{display:flex;align-items:baseline;gap:12px;margin:0 0 14px;}
+  .home-sec__h h2{font-family:var(--serif);font-size:20px;font-weight:600;margin:0;color:var(--ink);}
+  .home-sec__h span{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:13px;}
+  .card{text-decoration:none;background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    padding:17px 18px;transition:border-color .15s,transform .15s,box-shadow .15s;cursor:pointer;display:block;}
+  .card:hover{border-color:var(--pine);transform:translateY(-3px);box-shadow:0 14px 28px -18px rgba(18,62,49,.4);}
+  .card__type{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:9px;}
+  .card__t{font-size:16px;font-weight:700;color:var(--ink);margin:0 0 6px;letter-spacing:-.01em;}
+  .card__d{font-size:13.5px;color:var(--ink-2);line-height:1.55;margin:0;}
+
+  .footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
+    font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em;line-height:1.8;}
+
+  /* ---------- MOBILE DRAWER ---------- */
+  .scrim{position:fixed;inset:0;background:rgba(18,33,30,.42);z-index:48;opacity:0;visibility:hidden;transition:opacity .2s;}
+  .scrim.show{opacity:1;visibility:visible;}
+  @media(max-width:760px){
+    .menu-btn{display:inline-flex;}
+    .search{width:auto;flex:1;}
+    .sidebar{position:fixed;top:0;left:0;height:100vh;width:280px;z-index:50;background:var(--surface);
+      transform:translateX(-100%);transition:transform .24s ease;padding-top:22px;box-shadow:18px 0 40px -24px rgba(0,0,0,.4);}
+    .sidebar.open{transform:translateX(0);}
+    .main{padding-top:26px;}
+  }
+  @media(min-width:761px){.scrim{display:none;}}
+
+  .skip{position:absolute;left:-999px;top:0;background:var(--pine);color:#fff;padding:8px 14px;border-radius:0 0 8px 0;z-index:99;}
+  .skip:focus{left:0;}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important;}}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">본문 바로가기</a>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <a class="brand" href="#/index">
+    <span class="brand__mark">박건희 위키</span>
+    <span class="brand__sub">Pyeongchang Primary Care</span>
+  </a>
+  <div class="topbar__spacer"></div>
+  <div class="search">
+    <svg class="search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+    <input id="search" type="text" placeholder="검색…" autocomplete="off" aria-label="위키 검색" />
+    <div class="search__results" id="searchResults"></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar" aria-label="페이지 내비게이션"></nav>
+  <main class="main" id="main"></main>
+  <aside class="rail" id="rail" aria-label="백링크"></aside>
+</div>
+
+<script>
+/* ============ PAGE DATA ============ */
+const PAGES = {
+"index":{group:"home",type:"home",title:"홈"},
+
+"people/park-geonhee":{group:"core",type:"person",title:"박건희",
+  eyebrow:"인물 · Person",
+  meta:[["역할","제8대 평창군 보건의료원장"],["전공","예방의학 · 보건학"],["재임","2023.3 ~"]],
+  lede:"<b>예방의학 전문의</b>이자 <b>보건학 박사</b>. 의료정책관리·[[concepts/primary-care|일차의료]]·지역보건을 전공했고, WHO 국제보건 현장과 국내 보건소·감염병 대응을 거쳐 의료취약지 평창에서 일차의료 중심의 지역의료 혁신을 실험·전파하고 있다.",
+  body:`
+<blockquote>그가 사람들에게 보낸 문자에 담긴 키워드: <em>"서로 돌보는 공동체, 지역의 힘, 공공과 민간의 협력."</em><span class="src">경향신문 인터뷰, 2025.1</span></blockquote>
+<h2>한눈에 보기</h2>
+<table><tbody>
+<tr><th>출생</th><td>전남 보성군 (취임 당시 만 45세, 2023년 기준)</td></tr>
+<tr><th>의학</th><td>서울대 의대 의학사(2002) · 예방의학 전문의(의료관리 전공, 2009)</td></tr>
+<tr><th>보건학</th><td>서울대 보건대학원 석사(2006) · 박사(보건정책관리 전공, 2009)</td></tr>
+<tr><th>현직</th><td>제8대 [[institutions/pyeongchang-health-center|평창군 보건의료원장]] (임기제 서기관, 2023.3~)</td></tr>
+<tr><th>대표 성과</th><td>[[programs/frailty-prevention|노쇠예방]] · [[programs/hub-and-spoke-reform|허브앤스포크]] · [[programs/o2o-smart-healthcare|스마트 헬스케어]]</td></tr>
+<tr><th>수상</th><td>녹색소비자연대상 · 장기려 의도상(2025)</td></tr>
+</tbody></table>
+<h2>경력 타임라인</h2>
+<ul>
+<li><strong>2002.4~2005.4</strong> 공중보건의사 (안양교도소, 보건복지부)</li>
+<li><strong>2006.3~2009.2</strong> 서울의대 의료관리학교실 전공의 → <strong>2009</strong> 의료관리연구소 선임연구원</li>
+<li><strong>2009~2012</strong> [[concepts/global-health|WHO]] 라오스 사무소 모자보건팀 의료자문관</li>
+<li><strong>2012~2014</strong> WHO 서태평양지역본부(필리핀) 기획조정실 국가지원과 기술자문관</li>
+<li><strong>2014~2017.9</strong> WHO 남태평양사무소(피지) 보건의료체계팀 기술자문관 및 팀리더(대행)</li>
+<li><strong>2018.2~2021.8</strong> 안산시 상록수보건소장</li>
+<li><strong>2021.8~2023.1</strong> 경기도 감염병관리지원단 단장 → [[record/covid-response|코로나19 대응]]</li>
+<li><strong>2023.3~</strong> 제8대 평창군 보건의료원장</li>
+</ul>
+<h2>주요 전문 영역</h2>
+<ul>
+<li><strong>정책 개발</strong>: [[concepts/primary-care|일차보건의료]](보건소·지소·진료원), 고령화·만성질환, AI/스마트 헬스, 정신보건, 손상예방, 응급의료, 감염병, 모자보건.</li>
+<li><strong>보건 재정·인력·정보·조직 정책</strong> 및 [[concepts/value-based-payment|건강보험 정책]].</li>
+<li><strong>취약계층 건강보장</strong>(노숙인·이주민·장애인) 및 보건행정 집행·평가(질관리·사업평가·병원관리).</li>
+</ul>
+<h2>핵심 신념 (Thesis)</h2>
+<ol>
+<li><strong>"중증·응급은 어렵지만 [[concepts/primary-care|일차의료]]는 잘할 수 있다. 일차의료를 지역에서 제대로 제공하는 것이 곧 지역의료 혁신."</strong> (서울대 포럼, 2025.3)</li>
+<li><strong>예방이 치료보다 싸다</strong> — [[programs/frailty-prevention|노쇠예방]]으로 실증, [[concepts/value-based-payment|가치기반 지불]]의 토대.</li>
+<li><strong>건물이 아니라 연결</strong> — 시설 신축보다 1·2·3차의 촘촘한 연계 → [[programs/hub-and-spoke-reform|허브앤스포크]].</li>
+<li><strong>상급병원의 책무성</strong> — 대도시·상급병원이 농어촌 의료에 책임을 → [[ideas/policy-proposals|책무성·재정 협약]].</li>
+<li><strong>의료 이전의 문제</strong> — [[concepts/social-determinants|건강의 사회적 결정요인]], 지역의 쇠퇴가 불평등의 근원.</li>
+<li><strong>공공-민간 협력</strong> — 환자를 빼앗는 게 아니라 민간을 지원하는 협력모형.</li>
+</ol>
+<h2>글쓰기·발언 활동</h2>
+<ul>
+<li><strong>기고</strong>: 동아일보(『지방의료재정교부금법』 제안, 2024.11), 강원도민일보 도민시론 연재 → [[ideas/policy-proposals]]</li>
+<li><strong>인터뷰·르포</strong>: 경향신문, 한겨레('길 뚫린 오지'), 아시아투데이, 창비, 닥터스뉴스, SNU 국제보건연구센터</li>
+<li><strong>발표</strong>: 서울대 건강사회개발원 포럼, 국회 토론회, KMI 글로벌 헬스 리더십캠프</li>
+<li><strong>학술</strong>: <em>JAMA Network Open</em> 2025 ([[programs/frailty-prevention|노쇠예방]]), KJFP 2026 보건의료체계 개혁 3부작 등 → [[record/publications|전체 논문]]</li>
+</ul>
+`},
+
+"institutions/pyeongchang-health-center":{group:"core",type:"institution",title:"평창군 보건의료원",
+  eyebrow:"기관 · Institution",
+  meta:[["소재","강원특별자치도 평창군"],["원장","박건희 (제8대)"],["근거법","지역보건법"]],
+  lede:"강원특별자치도 평창군의 공공보건의료기관. 진료 기능(병원)과 보건사업 기능(보건소)을 한 기관에서 함께 수행한다. <b>\"지역 내 최선의 일차의료\"</b>와 <b>\"상급병원으로의 신속한 연계\"</b> 두 축으로 운영된다.",
+  body:`
+<h2>지역 맥락</h2>
+<ul>
+<li>면적이 넓고 산간이 많아 <strong>의료 접근성 제약</strong>이 큰 전형적 의료취약지.</li>
+<li>고령화·인구감소 지역으로 만성질환 관리 수요가 핵심 과제.</li>
+<li>평창 읍내 내과계 의원은 소수(인터뷰 기준 6곳) — 공공의 등록관리 역할 여지가 큼.</li>
+</ul>
+<h2>기능 구조 — '의료 가교'</h2>
+<ol>
+<li><strong>자체 제공</strong>: 만성질환 관리, 기본 응급처치 등 [[concepts/primary-care|일차의료]].</li>
+<li><strong>연계</strong>: 중증·응급 환자를 인근 2~3차 병원으로 골든타임 내 이송.</li>
+<li>연계 네트워크: 강원대병원 · 원주세브란스 · 강릉아산병원 등 → [[programs/hub-and-spoke-reform]]</li>
+</ol>
+<h2>주요 사업</h2>
+<ul>
+<li>[[programs/frailty-prevention|노쇠예방관리사업]] (2014~)</li>
+<li>[[programs/o2o-smart-healthcare|O2O 스마트 헬스케어 / 다학제 진료]] (2024.1~, 서울대 오주환 교수팀)</li>
+<li>[[programs/hub-and-spoke-reform|허브앤스포크 권역팀 개편]] (2024.7)</li>
+<li>[[programs/digital-healthcare-center|디지털 헬스케어 / AI·IoT 어르신 건강관리]]</li>
+<li>방문건강관리, 모자보건, 감염병관리, 찾아가는 정신건강상담실, 직장인 건강 체험관</li>
+</ul>
+<h2>거버넌스 메모</h2>
+<p>평창군 소속 기관. 권역팀 체제로 보건지소를 재편(평창권역팀 등). 평창군 전용서체 HAPPY700, 슬로건 'HAPPY 700 평창'.</p>
+`},
+
+"programs/frailty-prevention":{group:"programs",type:"program",title:"노쇠예방관리사업",
+  eyebrow:"프로그램 · Program",
+  meta:[["사업 시작","2014 (11년 운영)"],["근거","JAMA Network Open 2025"],["비용효과비","8.82"]],
+  lede:"<b>2014년부터 11년간</b> 자체 운영해 온 노인 대상 예방사업. 65세 이상의 신체기능·영양·인지·우울을 평가하고 <b>'전(前)노쇠' 단계</b>에 단백질 보충·근력운동·다제약물 관리를 집중 개입한다. <b>\"예방이 치료보다 싸다\"</b>를 실증하는 대표 사례.",
+  body:`
+<h2>핵심 논리 — 비용 사다리</h2>
+<table><thead><tr><th>상태</th><th>연간 의료비(개략)</th></tr></thead><tbody>
+<tr><td>건강 유지</td><td>약 50만 원</td></tr>
+<tr><td>만성질환 악화</td><td>약 200만 원</td></tr>
+<tr><td>합병증·와상</td><td>약 2,000만 원</td></tr>
+</tbody></table>
+<p>대중 보도(조선일보, 2025.12.2)는 <em>"100만원 들여 6개월 노인 운동… 병원비 900만원 덜 들더라"</em>로 요약했다.</p>
+<h2>근거 (Evidence) — JAMA Network Open</h2>
+<p>게재 논문은 <strong>"Long-Term Health and Cost Outcomes of a 24-Week Multicomponent Frailty Intervention in Older Adults"</strong> (<em>JAMA Network Open</em>, 2025.11.12; DOI 10.1001/jamanetworkopen.2025.43278; 저자에 Kunhee Park 포함).</p>
+<ul>
+<li><strong>설계</strong>: 평창 농촌 노인 대상 24주 다요소 중재 연구(ASPRA-IS), 비무작위·전향 단일군. ClinicalTrials.gov <strong>NCT02554994</strong>. ※ 사업 전체는 2014년부터 11년간 운영되며, <strong>2015.8~2017.1</strong>은 본 논문의 분석 대상자(코호트) 기간이다.</li>
+<li><strong>대상</strong>: 사회경제적 취약 65세 이상, 119쌍 매칭(참여 vs 비참여).</li>
+<li><strong>결과</strong>: 66개월 추적 동안 사망·장기요양 진입까지 생존기간이 유의하게 연장. 1인당 누적 의료이용 비용 <strong>약 $7,688(≈877만 원)</strong> 절감, <strong>비용효과비 8.82</strong>.</li>
+</ul>
+<p>※ 보도의 "약 9배"는 정밀값 8.82의 라운딩.</p>
+<h2>정책적 함의</h2>
+<ul>
+<li>현행 [[concepts/value-based-payment|행위별수가제]]는 예방 개입을 보상하지 못함 → 가치기반 수가 전환 논거.</li>
+<li>보건의료원·보건지소 체계를 [[programs/hub-and-spoke-reform|허브앤스포크]]로 전환하는 모형의 임상 콘텐츠 제공.</li>
+</ul>
+`},
+
+"programs/o2o-smart-healthcare":{group:"programs",type:"program",title:"O2O 스마트 헬스케어 / 다학제 진료",
+  eyebrow:"프로그램 · Program",
+  meta:[["협력","서울대 오주환 교수팀"],["시작","2024.1"],["규모","약 750명"]],
+  lede:"<b>2024년 1월부터</b> 군민 약 750명(당뇨 약 500명·고혈압 약 500명, 중복 포함)을 대상으로 운영하는 스마트 헬스케어 기반 만성질환 등록관리 모델. 온라인 모니터링과 오프라인 다학제 진료를 잇는 <b>O2O 구조</b>가 특징이다.",
+  body:`
+<h2>작동 방식</h2>
+<ol>
+<li>고혈압·당뇨 환자에게 측정기기 제공, <strong>혈압·혈당을 매일 앱에 입력</strong>.</li>
+<li>수치에 따라 현황판에 색 표시 — 양호(초록)/주의(노랑·주황)/위험(빨강).</li>
+<li>약 2주간 '빨간불'이 지속되면 <strong>특별관리대상</strong>으로 병원 호출.</li>
+<li><strong>다학제 진료</strong>: 의사·간호사·운동처방사·영양사·연구원 등 6명 내외가 생활습관을 종합 지도.</li>
+</ol>
+<blockquote>현장 비유: 환자 한 명을 두고 전문가들이 질문을 쏟아내는 <em>"건강관리 청문회"</em><span class="src">경향신문 르포, 2025.1</span></blockquote>
+<h2>성과 사례 (정성)</h2>
+<p>강원도민일보 도민시론에서 소개된 <strong>인슐린 46U→18U 감량</strong>, 89세 어르신 회복 사례 → [[ideas/policy-proposals|'건강 어벤져스']] 논거.</p>
+<h2>의의</h2>
+<ul>
+<li>디지털이 의료취약지 [[concepts/primary-care|일차의료]] 공백을 메우는 실증 모델.</li>
+<li>단, 한계도 지적 — <strong>재정 지원 부족</strong>과 <strong>고령층 디지털 역량</strong> (서울대 포럼, 2025.3).</li>
+<li>[[programs/digital-healthcare-center|디지털 헬스케어 센터]] 및 AI 스마트 의뢰 네트워크로 확장.</li>
+<li>이용 경험·수용성은 혼합연구로 정리됨 — mHealth 프리프린트(JMIR, DOI 10.2196/preprints.91368) → [[record/publications]].</li>
+</ul>
+`},
+
+"programs/hub-and-spoke-reform":{group:"programs",type:"program",title:"허브앤스포크 조직개편",
+  eyebrow:"프로그램 · Program",
+  meta:[["시행","2024.7"],["단위","4개 권역팀"],["철학","촘촘한 연결"]],
+  lede:"<b>2024년 7월 시행</b>한 조직 재편. 분산된 보건지소를 <b>4개 권역팀</b>으로 묶고, 의사가 근무하는 <b>허브</b>가 일선 <b>스포크</b>를 지원하는 구조로 전환했다. \"답은 건물이 아니라 촘촘한 연결\"을 조직으로 구현한 것.",
+  body:`
+<h2>모형의 핵심</h2>
+<ul>
+<li><strong>스포크</strong>: 전문간호사(보건진료 전담공무원)가 주민 접점을 담당.</li>
+<li><strong>허브</strong>: 의사 2~4명이 근무하는 기관이 스포크를 임상적으로 지원·연계.</li>
+<li><strong>취지</strong>: 공중보건의 감소 위기를 보건지소 체계 혁신의 기회로 전환.</li>
+</ul>
+<h2>배경 — 공보의 감소</h2>
+<p>"의사 1명 = 보건지소 1곳" 식 분산 배치는 지속 불가능. 인력을 권역으로 모으고 역할을 분담(간호 전면 배치 + 의사 거점 지원)하는 편이 현실적.</p>
+<h2>정책 제안과의 연결</h2>
+<ul>
+<li>기존 보건의료원·보건지소 체계에 적용하는 것이 가장 현실적 출발점 → [[ideas/policy-proposals]].</li>
+<li>[[concepts/value-based-payment|가치기반 수가]] + 의료취약지 가산과 결합해 민간 일차의료까지 통합 서비스 유도.</li>
+<li>광역 인력 수급 조절 및 지자체 [[concepts/regional-health-inequality|책무성]] 의제와 연결.</li>
+</ul>
+`},
+
+"programs/digital-healthcare-center":{group:"programs",type:"program",title:"디지털 헬스케어 / AI·IoT 사업",
+  eyebrow:"프로그램 · Program",
+  meta:[["영역","AI · IoT · 의뢰 네트워크"],["연계","O2O 스마트 헬스케어"]],
+  lede:"AI·IoT 기반 어르신 건강관리와 디지털 헬스케어 혁신 센터 구상을 포함하는 사업군. [[programs/o2o-smart-healthcare|O2O 스마트 헬스케어]]의 기술적 토대이자 확장 방향이다.",
+  body:`
+<h2>구성 요소</h2>
+<ul>
+<li><strong>AI·IoT 기반 어르신 건강관리</strong> — 평창군 보건사업 공식 메뉴에 포함된 상시 사업.</li>
+<li><strong>AI 기반 스마트 의뢰 네트워크</strong> 구상 — 일차의료기관과 상급병원 간 의뢰를 지능화.</li>
+<li><strong>간호 인력용 AI 도구·데이터 표준화</strong> — 국제 포럼 영어 발표 주제.</li>
+</ul>
+<h2>국제 무대 공유</h2>
+<p>아시아개발은행(ADB) <strong>'Harnessing AI for Health Equity'</strong> 포럼에서 <em>"AI Application in Primary Healthcare: Pyeongchang's Experience"</em>(2026.3.25, development.asia)를 발표 → [[concepts/global-health|국제보건]].</p>
+<h2>박건희의 균형 잡힌 입장</h2>
+<p>디지털이 [[concepts/regional-health-inequality|지역의료 공백]]을 메우는 데 효과적일 수 있지만 두 전제를 강조:</p>
+<ol>
+<li><strong>재정 지원이 부족하다</strong> — 도입에 상응하는 지불·보상 구조 미비.</li>
+<li><strong>고령층 디지털 역량 강화</strong> — 못 쓰면 격차를 오히려 키운다.</li>
+</ol>
+<blockquote><em>"디지털은 일차의료를 대체하는 것이 아니라, 일차의료를 더 잘하게 만드는 도구다."</em><span class="src">서울대 포럼 발언 취지</span></blockquote>
+`},
+
+"concepts/primary-care":{group:"concepts",type:"concept",title:"일차의료 (Primary Care)",
+  eyebrow:"개념 · Concept",
+  lede:"박건희 사고의 중심 개념. 단순한 '동네 의원'을 넘어 <b>등록·지속관리·다학제·예방</b>을 포괄하는 기능적 개념으로 사용한다.",
+  body:`
+<h2>강조하는 속성</h2>
+<ul>
+<li><strong>지속성·등록관리</strong>: 일회성 진료가 아니라 등록 후 지속 관리. 공공이 맡아 민간과 협력.</li>
+<li><strong>다학제팀</strong>: 의사 단독이 아닌 간호·영양·운동·돌봄 → [[programs/o2o-smart-healthcare|다학제 진료]].</li>
+<li><strong>예방 지향</strong>: [[programs/frailty-prevention|노쇠예방]]처럼 발병·악화 이전 개입.</li>
+<li><strong>연계 기능</strong>: 1·2·3차의 촘촘한 연결 → 응급실·입원 감소.</li>
+</ul>
+<h2>인접 개념과의 구분</h2>
+<p>박건희는 <strong>일차의료(primary care)</strong> · <strong>공중보건(public health)</strong> · <strong>일차보건의료(PHC)</strong>를 구분한다. PHC는 알마아타 전통의 더 포괄적·지역사회 지향 개념으로, 그의 [[concepts/global-health|WHO 경력]]이 토대다.</p>
+<blockquote><em>"일차의료가 제대로 작동하면 응급실·입원실 이용이 줄어든다."</em><span class="src">경향신문 인터뷰, 2025.1</span></blockquote>
+`},
+
+"concepts/social-determinants":{group:"concepts",type:"concept",title:"건강의 사회적 결정요인",
+  eyebrow:"개념 · Concept",
+  lede:"지역 건강불평등을 설명하는 상위 틀. 핵심 명제는 <b>\"의료 이전의 문제\"</b> — 근린환경·지자체 역량·정책 등 지역 수준의 자원 차이가 불평등을 직접 만든다. <b>의료기관 수 이전에 지역 자체의 쇠퇴</b>가 원인.",
+  body:`
+<h2>정책적 함의</h2>
+<ul>
+<li>의료격차를 '공공서비스 불평등'을 넘어 <strong>헌법적 건강권</strong> 문제로 재규정.</li>
+<li><strong>HiAP(Health in All Policies)</strong>·사회적 처방·디지털 헬스를 묶는 통합 접근 → [[ideas/policy-proposals]].</li>
+<li>"서로 돌보는 공동체"를 통한 사회적 응집력 회복.</li>
+</ul>
+<h2>활용 맥락</h2>
+<ul>
+<li>지역사회 오피니언 리더 대상 강의 주제.</li>
+<li>국회 입법정책 컨퍼런스 토론문에서 '금융 실패'를 [[concepts/value-based-payment|행위별수가제]]·예방 저평가와 연결.</li>
+<li>이론적 배경: 롤스·아마르티아 센·공화주의 → [[ideas/policy-proposals|'왜 우리는 서로 도와야 하는가']].</li>
+</ul>
+`},
+
+"concepts/value-based-payment":{group:"concepts",type:"concept",title:"가치기반 지불제도",
+  eyebrow:"개념 · Concept",
+  lede:"재정개혁 사고의 축. 현행 <b>행위별수가제</b>는 진료 '행위'의 양에 보상하므로 예방·등록관리·다학제 같은 일차의료 핵심 활동을 보상하지 못하고 농촌에 불리하다고 본다. 대안은 <b>성과·가치 기반 지불 + 의료취약지 가산</b>.",
+  body:`
+<h2>문제 진단</h2>
+<ul>
+<li>필수의료를 할수록 적자 → 전문의 채용난 → 전공의 과로의 악순환.</li>
+<li>[[programs/frailty-prevention|예방·노쇠관리]]처럼 비용효과 큰 개입이 수가표에 없어 저평가 → '의료의 금융 실패'.</li>
+</ul>
+<h2>제안 방향</h2>
+<ul>
+<li>행위별수가제 → <strong>가치기반 수가(VBP)</strong> + 의료취약지 <strong>가산</strong>.</li>
+<li><strong>HCC 기반 인두제</strong> 및 <strong>공유저축(shared savings)</strong> 모델 관심.</li>
+<li>[[programs/hub-and-spoke-reform|허브앤스포크]]와 결합해 민간 일차의료까지 통합 서비스 유도.</li>
+<li>한국형 주치의 모델·일차의료 혁신 시범사업(2026.7~)의 통합수가와 연결.</li>
+</ul>
+<h2>비교 참조</h2>
+<p>일본의 격년 진료보수 개정, DPC/PDPS 등 지불제도 개혁사를 비교 검토(비급여·실손보험 구조 발산 문제 포함).</p>
+`},
+
+"concepts/regional-health-inequality":{group:"concepts",type:"concept",title:"지역 건강불평등",
+  eyebrow:"개념 · Concept",
+  lede:"작업 전체를 떠받치는 거시 맥락. 대도시로의 의료인력 쏠림으로 지방 필수의료 공백이 현실화되고, 의료취약지 [[institutions/pyeongchang-health-center|보건의료원]]이 고령 지역사회를 지탱하는 '최후의 보루'가 된 상황.",
+  body:`
+<h2>구조적 원인</h2>
+<ol>
+<li><strong>행위별수가제의 농촌 불리</strong> → [[concepts/value-based-payment|가치기반 지불]] 부재.</li>
+<li><strong>수도권·대형병원 쏠림의 자기강화</strong> — 신뢰 저하 → 서울행 → 지방병원 위축.</li>
+<li><strong>인프라 부족 + 정주여건 열악</strong> — 인센티브를 줘도 정착 안 함(자녀 교육·거주).</li>
+<li><strong>취약지 정책 파편화</strong> — 분만/응급/보험료 경감이 제각각 정의·시행.</li>
+<li><strong>[[concepts/social-determinants|건강의 사회적 결정요인]]</strong> — 지역의 쇠퇴 자체가 원인.</li>
+</ol>
+<h2>대응 프레임</h2>
+<ul>
+<li>지역 단위 협력 사례를 만들어 <strong>입소문으로 확산</strong>(전국 단일 개혁은 불가능).</li>
+<li>상급병원·대도시의 <strong>책무성</strong>과 광역 간 재정 협약.</li>
+<li>정책 접점: 지역의사제, 한국형 주치의 시범사업, 지역의료지도·지역수가.</li>
+</ul>
+`},
+
+"concepts/global-health":{group:"concepts",type:"concept",title:"국제보건 (Global Health)",
+  eyebrow:"개념 · Concept",
+  meta:[["WHO 재직","2009~2017.9"],["지역","라오스 · 필리핀 · 피지"]],
+  lede:"WHO 약 8년 경력(라오스·필리핀·피지)이 [[concepts/primary-care|일차의료]]·[[concepts/social-determinants|SDOH]] 관점의 토대. 국제보건을 '해외 의료지원'이 아니라 <b>국내 지역보건에 적용 가능한 체계적 관점</b>(인력·재정·정보체계)으로 본다.",
+  body:`
+<blockquote><em>"책으로는 알 수 없는 국제보건과 지역보건"</em><span class="src">KMI 글로벌 헬스 리더십캠프 강연 주제</span></blockquote>
+<h2>WHO 재직 (2009~2017.9)</h2>
+<ul>
+<li><strong>라오스 사무소</strong> 모자보건팀 의료자문관 (2009~2012).</li>
+<li><strong>서태평양지역본부(필리핀, WPRO)</strong> 기획조정실 국가지원과 기술자문관 (2012~2014).</li>
+<li><strong>남태평양사무소(피지)</strong> 보건의료체계팀 기술자문관 및 팀리더(대행) (2014~2017.9) — 인력개발·재정·정보체계 정책자문.</li>
+</ul>
+<h2>대표 저작 (태평양·UHC)</h2>
+<ul>
+<li>Gilbert K, <strong>Park K</strong>, et al. Achieving UHC in the Pacific. <em>Health Systems & Reform</em> 2019;5(1):83-90.</li>
+<li><strong>Park K</strong>, Gilbert K, Annear PL. The costs of reaching the health-related SDGs. <em>Lancet Glob Health</em> 2017;5(12):e1184.</li>
+<li>Matheson D, <strong>Park K</strong>, Soakai TS. Pacific island health inequities forecast to grow… <em>Australian Health Review</em> 2017;41:590-598.</li>
+</ul>
+<p>전체 목록 → [[record/publications|논문]]. 현재 적용: ADB 'AI for Health Equity' 포럼 발표 등 [[programs/digital-healthcare-center|디지털 헬스케어]].</p>
+`},
+
+"ideas/policy-proposals":{group:"ideas",type:"ideas",title:"핵심 정책 제안 모음",
+  eyebrow:"정책 · Ideas & Thesis",
+  lede:"기고·발표·토론에서 반복·발전시켜 온 정책 제안의 종합. 평창 현장 경험을 근거로 삼는 것이 특징이며, <b>'평창군 일차의료 혁신 플레이북'</b>으로 집대성 중(웹/HTML, GitHub 호스팅).",
+  body:`
+<h2>1. 재정 제도 개혁</h2>
+<ul>
+<li><strong>지방의료재정교부금법</strong> 제정 제안 (동아일보, 2024.11). ※ 플레이북에서는 신규 입법 대신 <strong>지역필수의료 특별회계</strong> 활용으로 표현을 조정한 이력 → [[meta/open-questions]].</li>
+<li>행위별수가제 → [[concepts/value-based-payment|가치기반 수가]] + 의료취약지 가산.</li>
+<li>재정 분권과 지자체 책무성 — 광역 간 건강보험 공동책임 조항.</li>
+</ul>
+<h2>2. 인력 혁신 ('건강 어벤져스')</h2>
+<ul>
+<li>의사 1인의 분투를 넘어 [[programs/o2o-smart-healthcare|다학제팀]] 기반 일차의료로.</li>
+<li>[[programs/hub-and-spoke-reform|허브앤스포크]]: 전문간호사 스포크 + 의사 허브로 공보의 감소 대응.</li>
+<li>광역 단위 인력 수급 조절, 여성 의료인력의 정주·커리어 문제 직시.</li>
+</ul>
+<h2>3. 거버넌스·책무성</h2>
+<ul>
+<li>지자체가 '전략 기획자'로 (강원도민일보, 2026.4).</li>
+<li>상급병원·대도시의 책무성 — <em>"상급 병원이 책임감 가져야"</em> (아시아투데이, 2026.5).</li>
+<li>응급의료 체계 정비.</li>
+</ul>
+<h2>4. 통합 접근</h2>
+<ul>
+<li><strong>HiAP·디지털 헬스·사회적 처방</strong>을 묶는 통합 전략 (국회 입법정책 컨퍼런스).</li>
+<li>[[concepts/social-determinants|건강의 사회적 결정요인]] 기반 '함께 돌보는 공동체'.</li>
+</ul>
+<h2>5. 윤리·철학적 정당화</h2>
+<p>롤스·아마르티아 센·공화주의로 대도시의 농어촌 의료 지원 당위를 논증('왜 우리는 서로 도와야 하는가', 2026.5).</p>
+<h2>관련 산출물</h2>
+<p>플레이북(웹), 복지동향 331호(2026.5) 칼럼, 국가비전 입법정책 컨퍼런스 토론문, 환자중심성학회 WATCH 프레임워크 발제, 국가공중보건센터 바이블 10장 등 → [[sources/source-index]].</p>
+`},
+
+"sources/source-index":{group:"meta",type:"sources",title:"출처 색인",
+  eyebrow:"메타 · Sources",
+  lede:"이 위키가 컴파일된 원자료의 주석 목록. 카파시 패턴에서 LLM은 raw 소스를 <b>읽되 수정하지 않는다(source of truth)</b>. 새 자료를 추가하면 색인에 항목을 더하고 본문을 갱신한다.",
+  body:`
+<h2>A. 인물·약력</h2>
+<ul>
+<li><strong>이뉴스투데이</strong> (2023.3.12) — 취임, WHO 8년, 상록수보건소장·감염병관리지원단장.</li>
+<li><strong>강원도민일보</strong> (2023.3.13) — 전남 보성 출신, 전남과학고·서울대, 만 45세.</li>
+<li><strong>강원타임즈</strong> — 취임(2023.3.6)·약력.</li>
+<li><strong>SNU 국제보건연구센터(CGHR)</strong> (2023.11) — 자기소개.</li>
+<li><strong>닥터스뉴스</strong> (2025.12) — 라오스 3년·필리핀 2년·피지 3년, 박사 2009.</li>
+</ul>
+<h2>B. 핵심 철학·인터뷰</h2>
+<ul>
+<li><strong>경향신문</strong> (2025.1.10) 2건 — 일차의료·응급 / 스마트 헬스케어 르포. "서로 돌보는 공동체, 지역의 힘, 공공과 민간의 협력".</li>
+<li><strong>창비</strong> 『의료공공성 확대는 1차 의료 강화에서부터』 — 백영경과 대담.</li>
+<li><strong>아시아투데이</strong> (2026.5.27) — '상급 병원이 책임감 가져야'.</li>
+<li><strong>한겨레</strong> (2025.10) — "'길 뚫린 오지'의 심장 떨리는 일상".</li>
+</ul>
+<h2>C. 프로그램·근거</h2>
+<ul>
+<li><strong>조선일보</strong> (2025.12.2) — "100만원 들여 6개월 노인 운동… 병원비 900만원 덜 들더라" ([[programs/frailty-prevention|노쇠예방]]).</li>
+<li><strong>참여연대/복지동향</strong> (2026.5) — 노쇠예방 100만→900만원, <em>JAMA Network Open</em> 2025.</li>
+<li><strong>경향신문</strong> (2025.1.10) — 오주환 교수팀, 약 750명, '건강관리 청문회'.</li>
+<li><strong>G1 뉴스</strong> — "평창군, 의료 공백 채우기 '사활'" (영상).</li>
+<li><strong>서울대 건강사회개발원 포럼</strong> (2025.3.31) — "일차의료가 곧 지역의료 혁신".</li>
+<li><strong>평창군 보건의료원</strong> (pc.go.kr/health) — AI·IoT·방문건강·모자보건.</li>
+</ul>
+<h2>D. 정책 기고·발표</h2>
+<ul>
+<li><strong>동아일보 기고</strong> (2024.11.3) — '지방의료재정교부금법' 제안.</li>
+<li><strong>강원도민일보 도민시론</strong>: '건물 아닌 연결'(2026.3) · '전략 기획자'(2026.4) · '건강 어벤져스'(2026.5) · '왜 서로 도와야'(2026.5).</li>
+<li><strong>국회 토론회 영상</strong> — '인구소멸 시대, 지역의료 국가책임' (2건).</li>
+</ul>
+<h2>F. 학술 논문</h2>
+<ul>
+<li><strong>JAMA Network Open</strong> (2025.11.12) — 노쇠 중재 경제성 평가, DOI 10.1001/jamanetworkopen.2025.43278.</li>
+<li>전체 목록 → [[record/publications]] (KJFP 2026 3부작, mHealth 프리프린트, COVID·국제보건 다수).</li>
+</ul>
+<h2>G. 수상·시민참여</h2>
+<ul>
+<li><strong>안산뉴스</strong> — 박건희 녹색소비자연대상 수상.</li>
+<li><strong>조선일보</strong> (2025.12.18) — 장기려 의도상 관련.</li>
+<li>의료소비자 교육 — 소비자연대(asgcn)·YWCA·경기 언론 등.</li>
+</ul>
+<h2>H. 국제보건·COVID</h2>
+<ul>
+<li><strong>ADB</strong> 'Harnessing AI for Health Equity' 포럼 · development.asia "AI Application in Primary Healthcare: Pyeongchang's Experience" (2026.3) → [[programs/digital-healthcare-center]].</li>
+<li><strong>development.asia</strong> "What we can learn from the Korean response to COVID-19" → [[record/covid-response]].</li>
+<li><strong>WHO IRIS</strong> 보고서, SNU CGHR, 닥터스뉴스(2025.12) → [[concepts/global-health]].</li>
+</ul>
+<h2>I. 대화 기록 (본인 협업 산출물)</h2>
+<ul>
+<li>평창군 일차의료 혁신 플레이북(HTML/웹), 국가비전 입법정책 컨퍼런스 토론문, 복지동향 331호 칼럼 등.</li>
+</ul>
+<div class="signal signal--amber"><span class="signal__dot"></span><p>I 항목은 비공개 협업 자료 기반. 외부 인용 시 공개 출처(A~H)로 교차검증 권장 → [[meta/open-questions]].</p></div>
+`},
+
+"meta/open-questions":{group:"meta",type:"meta",title:"미해결 질문 · 확인 필요",
+  eyebrow:"메타 · Lint",
+  lede:"카파시 패턴의 <b>린팅(linting)</b> 페이지. 위키가 자랄 때 생기는 모순·공백·검증 대기 항목을 모아 건강성을 점검한다. 해소되면 본문에 반영하고 여기서 지운다.",
+  body:`
+<h2>해소됨 (이번 컴파일) ✓</h2>
+<div class="signal signal--green"><span class="signal__dot"></span><p><strong>스마트 헬스케어 인원</strong> 확정: <strong>약 750명</strong>(당뇨 약 500명·고혈압 약 500명, 중복 포함) → [[programs/o2o-smart-healthcare]]에 반영.</p></div>
+<div class="signal signal--green"><span class="signal__dot"></span><p><strong>노쇠사업 기간</strong> 정리: 총 사업기간은 <strong>2014년부터 11년간</strong>이 맞고, <em>JAMA</em> 논문의 분석 대상자만 <strong>2015.8~2017.1</strong>(ASPRA-IS 코호트)임 → [[programs/frailty-prevention]]에 반영.</p></div>
+<div class="signal signal--green"><span class="signal__dot"></span><p><strong>JAMA 서지정보</strong> 확보: <em>JAMA Network Open</em> 2025.11.12, DOI 10.1001/jamanetworkopen.2025.43278, 비용효과비 8.82 → [[programs/frailty-prevention]]에 반영.</p></div>
+<div class="signal signal--green"><span class="signal__dot"></span><p><strong>WHO 연도 구간</strong> 확정: 라오스 2009~2012 · 필리핀 2012~2014 · 피지 2014~2017.9 → [[concepts/global-health]]·[[people/park-geonhee]] 반영.</p></div>
+<div class="signal signal--green"><span class="signal__dot"></span><p><strong>영문 발표 링크</strong> 확보: ADB 'AI for Health Equity' / development.asia(2026.3) → [[programs/digital-healthcare-center]] 반영.</p></div>
+<h2>표현·정책안 변동</h2>
+<div class="signal signal--amber"><span class="signal__dot"></span><p><strong>재정 입법안 명칭</strong>: '지방의료재정교부금법'(동아일보) vs '지역필수의료 특별회계'(플레이북). 신규 입법인지 기존 기제 활용인지 명확화 → [[ideas/policy-proposals]].</p></div>
+<h2>공백 — 자료 들어오면 채울 항목</h2>
+<div class="signal signal--green"><span class="signal__dot"></span><p>허브앤스포크 <strong>4개 권역팀 명칭·관할</strong>, KJFP 2026 3부작의 공저자·국문 제목, COVID 논문별 박건희 기여 역할 미확보.</p></div>
+<h2>구조 메모</h2>
+<div class="signal signal--gray"><span class="signal__dot"></span><p>인물 페이지가 비대해지면 'WHO 시절'을 [[concepts/global-health]]로 추가 이관 검토. 외부 공유용/개인용 위키 분리 여부 결정 필요.</p></div>
+`},
+
+"record/publications":{group:"record",type:"record",title:"논문 · 출판 목록",
+  eyebrow:"이력·저작 · Publications",
+  meta:[["대표","JAMA Network Open 2025"],["분야","일차의료 · COVID · 국제보건"]],
+  lede:"박건희(영문 표기 <b>Park K / Kunhee Park</b>)의 학술 출판 목록을 주제별로 정리한 페이지. 평창 [[programs/frailty-prevention|노쇠예방]] 경제성 평가부터 [[concepts/value-based-payment|보건의료체계 개혁]], [[record/covid-response|COVID-19 대응]], [[concepts/global-health|태평양 국제보건]]까지 폭넓다.",
+  body:`
+<h2>일차의료 · 보건의료체계 개혁</h2>
+<p><em>Korean Journal of Family Practice</em> 2026;16(1) 개혁 3부작:</p>
+<ul>
+<li>Structural Transformation of the Korean Healthcare System to Protect National Health Rights: From the Perspective of Consumers and Primary Care. DOI 10.21215/kjfp.2026.16.1.9</li>
+<li>Transition to a Primary Care–Centered Healthcare System: A Structural Reform for Korean Healthcare. DOI 10.21215/kjfp.2026.16.1.33</li>
+<li>What Should Be Done Right Now for Better Health System in 10 Years?: Health System Reform Tasks. DOI 10.21215/kjfp.2026.16.1.1</li>
+</ul>
+<h2>노쇠 · 고령 (대표)</h2>
+<ul>
+<li>Long-Term Health and Cost Outcomes of a 24-Week Multicomponent Frailty Intervention in Older Adults. <em>JAMA Network Open</em> 2025;DOI 10.1001/jamanetworkopen.2025.43278 → [[programs/frailty-prevention]].</li>
+</ul>
+<h2>디지털 · 모바일 헬스</h2>
+<ul>
+<li>Experiences and Acceptance of Community-Based Mobile Health Services Among People in Underserved Rural Areas of Korea: A Mixed-Methods Study (Preprint). DOI 10.2196/preprints.91368 → [[programs/o2o-smart-healthcare]].</li>
+</ul>
+<h2>감염병 · COVID-19</h2>
+<p>경기도 [[record/covid-response|감염병관리지원단]] 시기 산출:</p>
+<ul>
+<li>Deciphering deaths associated with severe serious adverse events following SARS-CoV-2 vaccination. DOI 10.1016/j.jvacx.2024.100446</li>
+<li>Real-world data on the incidence and risk of Guillain–Barré syndrome following SARS-CoV-2 vaccination. DOI 10.1038/s41598-023-30940-1</li>
+<li>Viral shedding patterns of symptomatic SARS-CoV-2 infection… Gyeonggi. DOI 10.4178/epih.e2023008</li>
+<li>Direct indicators of social distancing effectiveness in COVID-19 outbreak stages… Korea. DOI 10.4178/epih.e2023065</li>
+<li>The protective effect of perceived social support on psychological health during COVID-19: Gyeonggi. DOI 10.14367/kjhep.2023.40.2.1</li>
+<li>Comparative Study on Two COVID-19 Outbreaks at a Long-Term Mental Health Facility in Korea. DOI 10.3390/medicina59061170</li>
+<li>Factors Affecting the Public Intention to Repeat the COVID-19 Vaccination. DOI 10.3390/healthcare11091235</li>
+<li>A Silent Outbreak of Hepatitis E Virus… after COVID-19 Vaccination? DOI 10.5009/gnl230098</li>
+<li>Risk of Lung Cancer and Risk Factors… in People Infected with Tuberculosis. DOI 10.15430/JCP.24.016</li>
+<li>Park K, Baek HJ. Contextual response to the COVID-19 pandemic from the experience of South Korea. <em>Public Health</em> 2022. DOI 10.1016/j.puhe.2022.07.015</li>
+</ul>
+<h2>국제보건 · 태평양 (WHO 시기)</h2>
+<ul>
+<li>Gilbert K, Park K, et al. Achieving UHC in the Pacific… <em>Health Systems & Reform</em> 2019;5(1):83-90. DOI 10.1080/23288604.2018.1537874</li>
+<li>Yoon C, …, Park K. Working conditions and perception on incentives of Fiji community health workers. <em>J Glob Health Sci</em> 2019;1(1):e8</li>
+<li>Park K, Gilbert K, Annear PL. The costs of reaching the health-related SDGs. <em>Lancet Glob Health</em> 2017;5(12):e1184</li>
+<li>Matheson D, Park K, Soakai TS. Pacific island health inequities forecast to grow… <em>Australian Health Review</em> 2017;41:590-598. DOI 10.1071/ah16065</li>
+<li>Kim E, Cho Y, Kwon S, Park K. Cost-benefit analysis of radiation oncology services in Fiji. <em>Cancer Epidemiology</em> 2017;50:247-256</li>
+</ul>
+`},
+
+"record/covid-response":{group:"record",type:"era",title:"코로나19 대응 (감염병관리지원단)",
+  eyebrow:"이력·저작 · Era",
+  meta:[["직책","경기도 감염병관리지원단 단장"],["기간","2021.8~2023.1"]],
+  lede:"평창 부임 직전, <b>경기도 감염병관리지원단 단장</b>(2021.8~2023.1)으로서 코로나19 팬데믹 대응을 이끈 시기. 인구 최대 광역지자체의 방역·역학·백신 안전 업무를 총괄했고, 다수의 [[record/publications|학술 논문]]으로 경험을 기록했다.",
+  body:`
+<h2>역할과 산출</h2>
+<ul>
+<li><strong>역학·방역</strong>: 사회적 거리두기 효과 분석, 바이러스 배출 패턴·접촉자 추적 등 근거 생산.</li>
+<li><strong>백신 안전 감시</strong>: 길랑–바레 증후군, 중대 이상반응 사망 등 실세계 데이터 분석.</li>
+<li><strong>취약시설 집단감염</strong>: 장기 정신요양시설 2개 시기 발생 비교 등.</li>
+<li><strong>심리·사회적 지지</strong>: 팬데믹기 사회적 지지의 정신건강 보호 효과.</li>
+</ul>
+<p>전체 논문 → [[record/publications]].</p>
+<h2>국제 공유</h2>
+<p>development.asia <em>"What we can learn from the Korean response to COVID-19"</em> 등으로 한국 대응 경험을 국제적으로 공유 → [[concepts/global-health]].</p>
+<h2>의의</h2>
+<p>이 시기의 시스템적 방역·데이터 역량이 이후 [[institutions/pyeongchang-health-center|평창]]에서의 [[programs/o2o-smart-healthcare|데이터 기반 만성질환 관리]]와 [[programs/digital-healthcare-center|디지털 헬스케어]]로 이어진다.</p>
+`}
+};
+
+/* ============ NAV STRUCTURE ============ */
+const NAV = [
+  {title:"홈", items:["index"]},
+  {title:"핵심", items:["people/park-geonhee","institutions/pyeongchang-health-center"]},
+  {title:"프로그램", items:["programs/frailty-prevention","programs/o2o-smart-healthcare","programs/hub-and-spoke-reform","programs/digital-healthcare-center"]},
+  {title:"개념", items:["concepts/primary-care","concepts/social-determinants","concepts/value-based-payment","concepts/regional-health-inequality","concepts/global-health"]},
+  {title:"정책", items:["ideas/policy-proposals"]},
+  {title:"이력·저작", items:["record/publications","record/covid-response"]},
+  {title:"메타", items:["sources/source-index","meta/open-questions"]},
+];
+
+const HOME_SECTIONS = [
+  {h:"핵심 인물·기관", n:"Core", items:[
+    {id:"people/park-geonhee", d:"위키의 중심 인물 — 예방의학 전문의이자 보건학 박사."},
+    {id:"institutions/pyeongchang-health-center", d:"그가 이끄는 의료취약지 공공보건의료기관."},
+  ]},
+  {h:"대표 프로그램", n:"Programs", items:[
+    {id:"programs/frailty-prevention", d:"JAMA Network Open 2025, 비용효과비 8.82."},
+    {id:"programs/o2o-smart-healthcare", d:"만성질환 약 750명 등록관리 + 다학제 진료."},
+    {id:"programs/hub-and-spoke-reform", d:"보건지소 → 4개 권역팀 (2024.7)."},
+    {id:"programs/digital-healthcare-center", d:"AI·IoT 어르신 건강관리, ADB 국제 발표."},
+  ]},
+  {h:"정책 사고", n:"Ideas", items:[
+    {id:"ideas/policy-proposals", d:"재정·인력·거버넌스 — 핵심 정책 제안의 종합."},
+  ]},
+  {h:"이력·저작", n:"Record", items:[
+    {id:"record/publications", d:"주제별 논문 — 일차의료·COVID·국제보건."},
+    {id:"record/covid-response", d:"경기도 감염병관리지원단 단장 시기(2021~2023)."},
+  ]},
+  {h:"개념 노트", n:"Concepts", items:[
+    {id:"concepts/primary-care", d:"위키 전체를 관통하는 중심 개념."},
+    {id:"concepts/social-determinants", d:"\"의료 이전의 문제\" — 불평등의 상위 틀."},
+    {id:"concepts/value-based-payment", d:"행위별수가제 비판과 가치기반 대안."},
+    {id:"concepts/regional-health-inequality", d:"작업 전체의 거시 맥락."},
+  ]},
+  {h:"메타", n:"Meta", items:[
+    {id:"sources/source-index", d:"모든 원자료의 주석 목록."},
+    {id:"meta/open-questions", d:"모순·공백·검증 대기 (lint)."},
+  ]},
+];
+
+/* ============ ENGINE ============ */
+const $ = s => document.querySelector(s);
+function linkify(html){
+  return html.replace(/\[\[([^\]|]+?)(?:\|([^\]]+?))?\]\]/g, (m, tgt, label)=>{
+    tgt = tgt.trim();
+    const p = PAGES[tgt];
+    const text = (label||"").trim() || (p ? p.title : tgt);
+    if(!p) return `<a class="wl wl--broken" title="아직 없는 페이지">${text}</a>`;
+    return `<a class="wl" href="#/${tgt}" data-nav="${tgt}">${text}</a>`;
+  });
+}
+// precompute backlinks
+const BACKLINKS = {};
+Object.keys(PAGES).forEach(id=>BACKLINKS[id]=new Set());
+Object.entries(PAGES).forEach(([id,p])=>{
+  const txt = (p.lede||"")+(p.body||"");
+  const re = /\[\[([^\]|]+?)(?:\|[^\]]+?)?\]\]/g; let mm;
+  while((mm=re.exec(txt))){ const t=mm[1].trim(); if(PAGES[t]&&t!==id) BACKLINKS[t].add(id); }
+});
+
+function typeLabel(t){return {person:"인물",institution:"기관",program:"프로그램",concept:"개념",ideas:"정책",sources:"메타",meta:"메타",record:"저작",era:"이력",home:"홈"}[t]||t;}
+
+function renderSidebar(active){
+  const el = $("#sidebar"); el.innerHTML = NAV.map(sec=>`
+    <div class="nav-sec">
+      <p class="nav-sec__title">${sec.title}</p>
+      ${sec.items.map(id=>{const p=PAGES[id];return `
+        <a class="nav-link ${id===active?'active':''}" href="#/${id}" data-nav="${id}">
+          <span class="dot dot--${p.type}"></span>${p.title}
+        </a>`;}).join("")}
+    </div>`).join("");
+}
+
+function renderBacklinks(id){
+  const el=$("#rail"); const links=[...(BACKLINKS[id]||[])];
+  if(!links.length){ el.innerHTML=`<p class="rail__h">연결된 문서</p><p class="rail__empty">이 페이지로 들어오는 링크가 아직 없습니다.</p>`; return; }
+  el.innerHTML=`<p class="rail__h">이 페이지로 연결된 문서 · ${links.length}</p>`+
+    links.map(l=>{const p=PAGES[l];return `
+      <a class="backlink" href="#/${l}" data-nav="${l}">
+        <span class="backlink__t"><span class="dot dot--${p.type}"></span>${p.title}</span>
+        <span class="backlink__type">${typeLabel(p.type)}</span>
+      </a>`;}).join("");
+}
+
+function renderHome(){
+  const m=$("#main");
+  m.innerHTML=`
+  <section class="hero">
+    <svg class="contour" viewBox="0 0 800 360" preserveAspectRatio="none" aria-hidden="true">
+      ${[0,1,2,3,4,5,6,7].map(i=>{const y=40+i*38;return `<path d="M-20 ${y} C 140 ${y-26}, 300 ${y+30}, 460 ${y-18} S 760 ${y+24}, 820 ${y-8}" fill="none" stroke="#9FE3C2" stroke-width="1.1"/>`;}).join("")}
+    </svg>
+    <p class="hero__eyebrow">LLM Wiki · Karpathy Pattern · 2026</p>
+    <h1 class="hero__title">박건희 위키<br><span class="accent">평창 일차의료 혁신</span> 지식 베이스</h1>
+    <p class="hero__desc">의료취약지 평창에서 일차의료 중심의 지역의료 혁신을 실험·전파하는 박건희 원장과 그 작업을 다루는 개인 지식 베이스입니다. 흩어진 원자료(보도·인터뷰·발표)를 점진적으로 '컴파일'한 상호 연결 문서로, 자료가 추가될 때마다 갱신·교차연결되며 자랍니다.</p>
+    <div class="hero__meta">
+      <span><b>17</b> 문서</span><span><b>6</b> 카테고리</span><span>마지막 컴파일 <b>2026-06-21</b></span>
+    </div>
+  </section>
+  ${HOME_SECTIONS.map(sec=>`
+    <section class="home-sec">
+      <div class="home-sec__h"><h2>${sec.h}</h2><span>${sec.n}</span></div>
+      <div class="cards">
+        ${sec.items.map(it=>{const p=PAGES[it.id];return `
+          <a class="card" href="#/${it.id}" data-nav="${it.id}">
+            <span class="card__type"><span class="dot dot--${p.type}"></span>${typeLabel(p.type)}</span>
+            <p class="card__t">${p.title}</p>
+            <p class="card__d">${it.d}</p>
+          </a>`;}).join("")}
+      </div>
+    </section>`).join("")}
+  <div class="footer">컴파일러 Claude (Opus 4.8) · 패턴 Andrej Karpathy <em>LLM Wiki</em> · 원자료 출처는 <a class="wl" href="#/sources/source-index" data-nav="sources/source-index">출처 색인</a> 참조 · 검증 대기 항목은 <a class="wl" href="#/meta/open-questions" data-nav="meta/open-questions">린트 페이지</a></div>`;
+  $("#rail").innerHTML=`<p class="rail__h">시작하기</p><p class="rail__empty">카드를 누르면 해당 문서로 이동합니다. 본문의 <span style="color:var(--pine)">초록색 링크</span>를 따라가며 탐색하세요.</p>`;
+}
+
+function renderPage(id){
+  const p=PAGES[id]; const m=$("#main");
+  const chips=(p.meta||[]).map(([k,v])=>`<span class="chip"><b>${k}</b>${v}</span>`).join("");
+  m.innerHTML=`
+    <p class="crumb"><a href="#/index" data-nav="index">홈</a> / ${typeLabel(p.type)} / ${p.title}</p>
+    <p class="eyebrow"><span class="dot dot--${p.type}"></span>${p.eyebrow||typeLabel(p.type)}</p>
+    <h1 class="title">${p.title}</h1>
+    ${p.lede?`<p class="lede">${linkify(p.lede)}</p>`:""}
+    ${chips?`<div class="chips">${chips}</div>`:""}
+    <div class="prose">${linkify(p.body||"")}</div>
+    <div class="related"><span class="related__label">관련</span>${[...(BACKLINKS[id]||[])].slice(0,6).map(l=>`<a class="wl" href="#/${l}" data-nav="${l}">${PAGES[l].title}</a>`).join("") || '<span class="rail__empty">—</span>'}</div>`;
+  renderBacklinks(id);
+}
+
+function route(){
+  let id=location.hash.replace(/^#\/?/,"")||"index";
+  if(!PAGES[id]) id="index";
+  renderSidebar(id);
+  if(id==="index") renderHome(); else renderPage(id);
+  window.scrollTo({top:0,behavior:"instant"in window?"instant":"auto"});
+  closeDrawer();
+}
+window.addEventListener("hashchange",route);
+
+/* delegated nav clicks (smooth, no full reload) */
+document.addEventListener("click",e=>{
+  const a=e.target.closest("[data-nav]");
+  if(a){ /* let hashchange handle render; just ensure hash updates */ }
+});
+
+/* ---------- SEARCH ---------- */
+const SEARCH_IDX=Object.entries(PAGES).filter(([id])=>id!=="index").map(([id,p])=>({
+  id, title:p.title, type:p.type,
+  hay:(p.title+" "+(p.lede||"")+" "+(p.body||"")).replace(/<[^>]+>/g," ").replace(/\[\[|\]\]/g," ").toLowerCase()
+}));
+const sInput=$("#search"), sRes=$("#searchResults"); let sActive=-1, sItems=[];
+function runSearch(q){
+  q=q.trim().toLowerCase();
+  if(!q){sRes.classList.remove("show");sRes.innerHTML="";return;}
+  sItems=SEARCH_IDX.filter(x=>x.hay.includes(q)).slice(0,8);
+  if(!sItems.length){sRes.innerHTML=`<div class="search__item" style="cursor:default;color:var(--ink-3)">결과 없음</div>`;sRes.classList.add("show");return;}
+  sActive=-1;
+  sRes.innerHTML=sItems.map((x,i)=>`<button class="search__item" data-i="${i}" data-nav="${x.id}"><small>${typeLabel(x.type)}</small>${x.title}</button>`).join("");
+  sRes.classList.add("show");
+}
+sInput.addEventListener("input",e=>runSearch(e.target.value));
+sInput.addEventListener("keydown",e=>{
+  if(!sRes.classList.contains("show"))return;
+  const btns=[...sRes.querySelectorAll(".search__item[data-nav]")];
+  if(e.key==="ArrowDown"){e.preventDefault();sActive=Math.min(sActive+1,btns.length-1);}
+  else if(e.key==="ArrowUp"){e.preventDefault();sActive=Math.max(sActive-1,0);}
+  else if(e.key==="Enter"){if(sActive>=0&&btns[sActive]){location.hash="#/"+btns[sActive].dataset.nav;sInput.value="";sRes.classList.remove("show");sInput.blur();}return;}
+  else if(e.key==="Escape"){sRes.classList.remove("show");sInput.blur();return;}
+  btns.forEach((b,i)=>b.classList.toggle("active",i===sActive));
+});
+sRes.addEventListener("click",e=>{const b=e.target.closest("[data-nav]");if(b){location.hash="#/"+b.dataset.nav;sInput.value="";sRes.classList.remove("show");}});
+document.addEventListener("click",e=>{if(!e.target.closest(".search"))sRes.classList.remove("show");});
+
+/* ---------- MOBILE DRAWER ---------- */
+const sidebar=$("#sidebar"), scrim=$("#scrim");
+function openDrawer(){sidebar.classList.add("open");scrim.classList.add("show");}
+function closeDrawer(){sidebar.classList.remove("open");scrim.classList.remove("show");}
+$("#menuBtn").addEventListener("click",openDrawer);
+scrim.addEventListener("click",closeDrawer);
+
+route();
+</script>
+</body>
+</html>
